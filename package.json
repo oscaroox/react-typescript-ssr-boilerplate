@@ -1,0 +1,50 @@
+{
+  "name": "webpack-ssr-ts-react",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf build",
+    "dev": "npm run build:server && concurrently \"npm run watch:server\" \"npm run watch:nodemon:server\" ",
+    "webpack": "TS_NODE_PROJECT=\"tsconfig-webpack.json\" webpack",
+    "build": "npm run clean && npm run build:client:prod && npm run build:server:prod",
+    "build:client:prod": "npm run webpack -- --config ./webpack.client.prod.ts -p --mode=production",
+    "build:server:prod": "npm run webpack -- --config ./webpack.server.ts -p --mode=production",
+    "build:server": "npm run webpack -- --config ./webpack.server.ts --mode=development --display=errors-only",
+    "watch:server": "npm run webpack -- --config ./webpack.server.ts --mode=development --watch --display=errors-only",
+    "watch:nodemon:server": "nodemon build/server/server.js"
+  },
+  "devDependencies": {
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4",
+    "@types/webpack": "^4.0.0",
+    "@types/webpack-node-externals": "^1.6.2",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.1",
+    "react-hot-loader": "^4.0.0",
+    "rimraf": "^2.6.2",
+    "ts-loader": "^4.0.1",
+    "ts-node": "^5.0.1",
+    "tsconfig-paths": "^3.1.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-middleware": "^3.0.1",
+    "webpack-dev-server": "^3.1.0",
+    "webpack-node-externals": "^1.6.0",
+    "webpack-stats-plugin": "^0.2.1",
+    "write-file-webpack-plugin": "^4.2.0"
+  },
+  "dependencies": {
+    "@types/express": "^4.11.1",
+    "express": "^4.16.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
