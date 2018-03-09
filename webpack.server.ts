@@ -10,18 +10,20 @@ const serverConfig: webpack.Configuration = {
     ],
     target: "node",
     node: {
-        __dirname: true,
-        __filename: true,
+        __dirname: false,
+        __filename: false,
     },
     output: {
         path: __dirname + "/build/server",
-        publicPath: "/",
         filename: "server.js",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
     externals: [nodeExternals()],
+    optimization: {
+        splitChunks: false,
+    },
     module: {
         rules: [
             {

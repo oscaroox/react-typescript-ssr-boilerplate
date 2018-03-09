@@ -4,16 +4,19 @@ import webpack from "webpack";
 
 const clientConfig: webpack.Configuration = {
     mode: "development",
-    context: path.resolve(__dirname),
+
     entry: [
         "./src/client.tsx",
     ],
     output: {
-        publicPath: "/",
+        publicPath: "/static/",
         filename: "bundle.js",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
+    },
+    optimization: {
+        splitChunks: false,
     },
     module: {
         rules: [

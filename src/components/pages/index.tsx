@@ -3,10 +3,10 @@ import { Loading } from "../Loading";
 
 export const AsyncHomePage = Loadable({
     loader: () => import("./HomePage"),
-    loading: Loadable,
+    loading: Loading,
 });
 
 export const AsyncAboutPage = Loadable({
     loader: () => import("./AboutPage"),
-    loading: Loadable,
+    loading: Loading,
 });
