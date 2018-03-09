@@ -3,6 +3,8 @@
 
 ### App ###
 build
+src/react-loadable.json
+src/stats.json
 
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/

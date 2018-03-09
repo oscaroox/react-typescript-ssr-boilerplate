@@ -1,6 +1,8 @@
 // tslint:disable:object-literal-sort-keys
 import webpack from "webpack";
 // tslint:disable-next-line:no-var-requires
+const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugin;
+// tslint:disable-next-line:no-var-requires
 const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
 
 const clientConfig: webpack.Configuration = {
@@ -18,7 +20,7 @@ const clientConfig: webpack.Configuration = {
     },
     optimization: {
         splitChunks: {
-            chunks: "initial",
+            chunks: "all",
         },
     },
     module: {
@@ -32,8 +34,10 @@ const clientConfig: webpack.Configuration = {
             },
         ],
     },
-    plugins: [new StatsWriterPlugin({
-        filename: "stats.json",
+    plugins: [new ReactLoadablePlugin({
+        filename: "./src/react-loadable.json",
+    }), new StatsWriterPlugin({
+        filename: "../../src/stats.json",
     })],
 };
 

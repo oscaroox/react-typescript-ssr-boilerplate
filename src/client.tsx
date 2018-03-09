@@ -1,5 +1,16 @@
 import React from "react";
-import { render } from "react-dom";
+import { hydrate } from "react-dom";
+import Loadable from "react-loadable";
+import { BrowserRouter as Routes } from "react-router-dom";
 import { App } from "./components/App";
 
-render(<App />, document.getElementById("root"));
+const component = (
+    <Routes>
+        <App />
+    </Routes>
+);
+
+Loadable.preloadReady()
+.then(() => {
+    hydrate(component, document.getElementById("root"));
+});
