@@ -18,6 +18,7 @@ if (process.env.NODE_ENV === "development") {
     // tslint:disable:no-var-requires
     const webpack = require("webpack");
     const devMiddleware = require("webpack-dev-middleware");
+    const hotMiddleware = require("webpack-hot-middleware");
     const clientConfig = require("../webpack.client.dev").default;
 
     const compiler = webpack(clientConfig);
@@ -25,6 +26,8 @@ if (process.env.NODE_ENV === "development") {
     app.use(devMiddleware(compiler, {
         publicPath: clientConfig.output.publicPath,
     }));
+
+    app.use(hotMiddleware(compiler));
 
 } else {
     stats = require("./react-loadable.json");
@@ -72,7 +75,7 @@ app.use("*", (req, res, next) => {
 
     const html = renderToString(
         <Loadable.Capture report={(moduleName: any) => modules.push(moduleName)}>
-            <StaticRouter context={context}>
+            <StaticRouter context={context} location={req.url}>
                 <App />
             </StaticRouter>
         </Loadable.Capture>);
@@ -96,5 +99,6 @@ Loadable.preloadAll()
     app.listen(3000, () => {
         // tslint:disable-next-line:no-console
         console.log("listening on port 3000");
+        console.log(`environemt: ${process.env.NODE_ENV}`);
     });
 });

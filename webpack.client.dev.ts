@@ -6,6 +6,7 @@ const clientConfig: webpack.Configuration = {
     mode: "development",
 
     entry: [
+        "webpack-hot-middleware/client",
         "./src/client.tsx",
     ],
     output: {
@@ -37,10 +38,12 @@ const clientConfig: webpack.Configuration = {
     },
 
     plugins: [
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ],
 
     devServer: {
+        contentBase: "./dist",
         hot: true,
     },
 
