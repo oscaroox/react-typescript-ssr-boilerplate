@@ -15,6 +15,7 @@
     "start": "NODE_ENV=production node build/server/server.js"
   },
   "devDependencies": {
+    "@types/express": "^4.11.1",
     "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.4",
     "@types/react-loadable": "^5.3.3",
@@ -30,12 +31,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "concurrently": "^3.5.1",
+    "copy-webpack-plugin": "^4.5.1",
     "nodemon": "^1.17.1",
     "react-hot-loader": "^4.0.0",
     "rimraf": "^2.6.2",
     "ts-loader": "^4.0.1",
     "ts-node": "^5.0.1",
-    "tsconfig-paths": "^3.1.1",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2",
     "webpack": "^4.1.1",
@@ -45,11 +46,10 @@
     "webpack-hot-middleware": "^2.21.2",
     "webpack-hot-server-middleware": "^0.4.0",
     "webpack-node-externals": "^1.6.0",
-    "webpack-stats-plugin": "^0.2.1",
-    "write-file-webpack-plugin": "^4.2.0"
+    "webpack-stats-plugin": "^0.2.1"
   },
   "dependencies": {
-    "@types/express": "^4.11.1",
+    "@types/copy-webpack-plugin": "^4.4.0",
     "express": "^4.16.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

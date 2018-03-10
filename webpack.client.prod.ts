@@ -1,4 +1,5 @@
 // tslint:disable:object-literal-sort-keys
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import webpack from "webpack";
 // tslint:disable-next-line:no-var-requires
 const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugin;
@@ -50,6 +51,9 @@ const clientConfig: webpack.Configuration = {
         new StatsWriterPlugin({
             filename: "../server/stats.json",
         }),
+        new CopyWebpackPlugin([
+            { from: "./src/public"},
+        ]),
     ],
 };
 
