@@ -1,13 +1,13 @@
 import React from "react";
 import { hydrate } from "react-dom";
 import Loadable from "react-loadable";
-import { BrowserRouter as Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { App } from "./components/App";
 
 const component = (
-    <Routes>
+    <BrowserRouter>
         <App />
-    </Routes>
+    </BrowserRouter>
 );
 
 Loadable.preloadReady()

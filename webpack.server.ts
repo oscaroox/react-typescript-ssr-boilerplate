@@ -1,12 +1,13 @@
 // tslint:disable:object-literal-sort-keys
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
-import WriteToFilePlugin from "write-file-webpack-plugin";
 
 const serverConfig: webpack.Configuration = {
+    name: "server",
+    mode: "production",
     context: __dirname,
     entry: [
-        "./src/server.tsx",
+        "./server/render.tsx",
     ],
     target: "node",
     node: {
@@ -15,29 +16,39 @@ const serverConfig: webpack.Configuration = {
     },
     output: {
         path: __dirname + "/build/server",
-        filename: "server.js",
+        libraryTarget: "commonjs2",
+        filename: "render.js",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
-    externals: [nodeExternals()],
     optimization: {
         splitChunks: false,
     },
+    externals: [nodeExternals()],
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
                 use: [
                     "babel-loader",
-                    "ts-loader",
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: {
+                                module: "esnext",
+                                target: "esnext",
+                            },
+                        },
+                    },
                 ],
             },
         ],
     },
-
     plugins: [
-        new WriteToFilePlugin(),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1,
+        }),
     ],
 };
 

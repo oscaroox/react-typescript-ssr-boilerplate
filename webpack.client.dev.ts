@@ -3,9 +3,11 @@ import path from "path";
 import webpack from "webpack";
 
 const clientConfig: webpack.Configuration = {
+    name: "client",
     mode: "development",
 
     entry: [
+        "webpack-hot-middleware/client",
         "./src/client.tsx",
     ],
     output: {
@@ -30,17 +32,30 @@ const clientConfig: webpack.Configuration = {
                             plugins: ["react-hot-loader/babel"],
                         },
                     },
-                    "ts-loader",
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: {
+                                module: "esnext",
+                                target: "esnext",
+                            },
+                        },
+                    },
                 ],
             },
         ],
     },
 
     plugins: [
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1,
+        }),
     ],
 
     devServer: {
+        contentBase: "./dist",
         hot: true,
     },
 

@@ -1,4 +1,5 @@
 // tslint:disable:object-literal-sort-keys
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import webpack from "webpack";
 // tslint:disable-next-line:no-var-requires
 const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugin;
@@ -6,6 +7,7 @@ const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugi
 const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
 
 const clientConfig: webpack.Configuration = {
+    name: "client",
     context: __dirname,
     entry: [
         "./src/client.tsx",
@@ -29,16 +31,30 @@ const clientConfig: webpack.Configuration = {
                 test: /\.(ts|tsx)$/,
                 use: [
                     "babel-loader",
-                    "ts-loader",
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: {
+                                module: "esnext",
+                                target: "esnext",
+                            },
+                        },
+                    },
                 ],
             },
         ],
     },
-    plugins: [new ReactLoadablePlugin({
-        filename: "./src/react-loadable.json",
-    }), new StatsWriterPlugin({
-        filename: "../../src/stats.json",
-    })],
+    plugins: [
+        new ReactLoadablePlugin({
+            filename: "./build/server/react-loadable.json",
+        }),
+        new StatsWriterPlugin({
+            filename: "../server/stats.json",
+        }),
+        new CopyWebpackPlugin([
+            { from: "./src/public"},
+        ]),
+    ],
 };
 
 export default clientConfig;
