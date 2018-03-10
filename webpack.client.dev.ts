@@ -53,9 +53,6 @@ const clientConfig: webpack.Configuration = {
     plugins: [
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1,
-        }),
     ],
 
     devServer: {

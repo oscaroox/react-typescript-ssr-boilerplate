@@ -31,7 +31,7 @@ export default function serverRenderer(stats: any): express.RequestHandler {
                     ${assets.getStyles()}
                 </head>
                 <body>
-                    <div id="root"></div>
+                    <div id="root">${html}</div>
                     ${assets.getScripts()}
                 </body>
             </html>
