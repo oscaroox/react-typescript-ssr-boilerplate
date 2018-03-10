@@ -5,14 +5,14 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf build",
-    "dev": "npm run clean && npm run build:server && concurrently \"npm run watch:server\" \"npm run watch:nodemon:server\" ",
+    "dev": "npm run clean && NODE_ENV=development npm run watch:server",
     "webpack": "TS_NODE_PROJECT=\"tsconfig-webpack.json\" webpack",
-    "build": "npm run clean && npm run build:client:prod && npm run build:server:prod",
-    "build:client:prod": "npm run webpack -- --config ./webpack.client.prod.ts -p --mode=production",
-    "build:server:prod": "npm run webpack -- --config ./webpack.server.ts -p --mode=production",
-    "build:server": "npm run webpack -- --config ./webpack.server.ts --mode=development --display=errors-only",
-    "watch:server": "npm run webpack -- --config ./webpack.server.ts --mode=development --watch --display=errors-only",
-    "watch:nodemon:server": "nodemon build/server/server.js"
+    "build": "npm run clean && npm run build:server && npm run build:client && npm run build:serverRenderer",
+    "build:client": "webpack --config ./webpack.client.prod.ts -p --mode=production",
+    "build:serverRenderer": "webpack --config ./webpack.server.ts -p --mode=production",
+    "build:server": "tsc -p tsconfig-webpack.json",
+    "watch:server": "nodemon",
+    "start": "NODE_ENV=production node build/server/server.js"
   },
   "devDependencies": {
     "@types/react": "^16.0.40",
@@ -21,6 +21,8 @@
     "@types/react-router": "^4.0.22",
     "@types/react-router-dom": "^4.2.4",
     "@types/webpack": "^4.0.0",
+    "@types/webpack-dev-middleware": "^2.0.0",
+    "@types/webpack-hot-middleware": "^2.16.2",
     "@types/webpack-node-externals": "^1.6.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
@@ -41,6 +43,7 @@
     "webpack-dev-middleware": "^3.0.1",
     "webpack-dev-server": "^3.1.0",
     "webpack-hot-middleware": "^2.21.2",
+    "webpack-hot-server-middleware": "^0.4.0",
     "webpack-node-externals": "^1.6.0",
     "webpack-stats-plugin": "^0.2.1",
     "write-file-webpack-plugin": "^4.2.0"
