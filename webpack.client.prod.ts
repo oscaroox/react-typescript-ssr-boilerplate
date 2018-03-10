@@ -1,5 +1,6 @@
 // tslint:disable:object-literal-sort-keys
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import ExtractTextPlugin from "extract-text-webpack-plugin";
 import webpack from "webpack";
 // tslint:disable-next-line:no-var-requires
 const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugin;
@@ -42,6 +43,13 @@ const clientConfig: webpack.Configuration = {
                     },
                 ],
             },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader",
+                }),
+            },
         ],
     },
     plugins: [
@@ -54,6 +62,10 @@ const clientConfig: webpack.Configuration = {
         new CopyWebpackPlugin([
             { from: "./src/public"},
         ]),
+        new ExtractTextPlugin({
+            filename: "styles-[contenthash].css",
+            allChunks: true,
+        }),
     ],
 };
 
