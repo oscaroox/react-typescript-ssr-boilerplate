@@ -43,6 +43,10 @@ const serverConfig: webpack.Configuration = {
                     },
                 ],
             },
+            {
+                test: /\.css$/,
+                use: ["css-loader/locals"],
+            },
         ],
     },
     plugins: [

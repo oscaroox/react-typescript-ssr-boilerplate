@@ -1,10 +1,15 @@
 import express from "express";
 import path from "path";
 import Loadable from "react-loadable";
+import serveFavicon from "serve-favicon";
+import { config } from "./config";
 
 const app = express();
 
-if (process.env.NODE_ENV === "development") {
+app.use(serveFavicon(path.resolve(config.staticPath, "favicon.ico")));
+app.use("/static/", express.static(config.staticPath));
+
+if (!config.isProd) {
 
   // tslint:disable:no-var-requires
   const webpack = require("webpack");
@@ -18,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
   const compiler = webpack([clientConfig, serverConfig]);
 
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: "/static/",
+    publicPath: clientConfig.output.publicPath,
     serverSideRender: true,
   }));
 
@@ -34,21 +39,19 @@ if (process.env.NODE_ENV === "development") {
 
   const stats = Object.assign({}, reactLoadableStats, webpackStats);
 
-  app.use("/static/", express.static(path.resolve(__dirname, "../client")));
-
   app.use(serverRenderer(stats));
 }
 
 Loadable.preloadAll()
 .then(() => {
-  app.listen(3000, (err: any) => {
+  app.listen(config.serverPort, (err: any) => {
     if (err) {
         // tslint:disable-next-line:no-console
       return console.error(err);
     }
     // tslint:disable-next-line:no-console
-    console.log("running at http://localhost:3000");
+    console.log(`running at http://localhost:${config.serverPort}`);
     // tslint:disable-next-line:no-console
-    console.log(`environemt: ${process.env.NODE_ENV}`);
+    console.log(`environemt: ${config.env}`);
   });
 });

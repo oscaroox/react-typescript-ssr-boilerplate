@@ -43,6 +43,10 @@ const clientConfig: webpack.Configuration = {
                     },
                 ],
             },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            },
         ],
     },
 
