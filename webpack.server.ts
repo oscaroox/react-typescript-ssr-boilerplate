@@ -16,6 +16,7 @@ const serverConfig: webpack.Configuration = {
     },
     output: {
         path: __dirname + "/build/server",
+        publicPath: "/static/",
         libraryTarget: "commonjs2",
         filename: "render.js",
     },
@@ -42,6 +43,14 @@ const serverConfig: webpack.Configuration = {
                         },
                     },
                 ],
+            },
+            {
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    name: "[name].[hash:8].[ext]",
+                },
             },
             {
                 test: /\.css$/,

@@ -1,6 +1,7 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 import { Link, Route } from "react-router-dom";
+import logo from "./logo.png";
 import { AsyncAboutPage, AsyncHomePage } from "./pages";
 
 export class RootApp extends React.Component {
@@ -9,6 +10,7 @@ export class RootApp extends React.Component {
             <Route exact path="/" component={AsyncHomePage} />
             <Route path="/about" component={AsyncAboutPage} />
 
+            <img src={logo} />
             <div>links</div>
             <ul>
                 <li>

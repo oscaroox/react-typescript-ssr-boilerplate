@@ -44,6 +44,14 @@ const clientConfig: webpack.Configuration = {
                 ],
             },
             {
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                loader: "url-loader",
+                options: {
+                  limit: 10000,
+                  name: "[name].[hash:8].[ext]",
+                },
+            },
+            {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"],
             },
