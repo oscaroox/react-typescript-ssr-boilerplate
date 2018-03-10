@@ -27,6 +27,7 @@ export default function serverRenderer(stats: any): express.RequestHandler {
             <html>
                 <head>
                     <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+                    <title>react-typescript-ssr</title>
                     ${assets.getStyles()}
                 </head>
                 <body>
