@@ -22,6 +22,7 @@
     "@types/react-loadable": "^5.3.3",
     "@types/react-router": "^4.0.22",
     "@types/react-router-dom": "^4.2.4",
+    "@types/serve-favicon": "^2.2.30",
     "@types/webpack": "^4.0.0",
     "@types/webpack-dev-middleware": "^2.0.0",
     "@types/webpack-hot-middleware": "^2.16.2",
@@ -59,6 +60,7 @@
     "react-dom": "^16.2.0",
     "react-loadable": "^5.3.1",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "serve-favicon": "^2.4.5"
   }
 }

@@ -1,8 +1,13 @@
 import express from "express";
 import path from "path";
 import Loadable from "react-loadable";
+import serveFavicon from "serve-favicon";
+import { config } from "./config";
 
 const app = express();
+
+app.use(serveFavicon(path.resolve(config.staticPath, "favicon.ico")));
+app.use("/static/", express.static(config.staticPath));
 
 if (process.env.NODE_ENV === "development") {
 
@@ -18,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
   const compiler = webpack([clientConfig, serverConfig]);
 
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: "/static/",
+    publicPath: clientConfig.output.publicPath,
     serverSideRender: true,
   }));
 
@@ -33,8 +38,6 @@ if (process.env.NODE_ENV === "development") {
   // tslint:enable:no-var-requires
 
   const stats = Object.assign({}, reactLoadableStats, webpackStats);
-
-  app.use("/static/", express.static(path.resolve(__dirname, "../client")));
 
   app.use(serverRenderer(stats));
 }

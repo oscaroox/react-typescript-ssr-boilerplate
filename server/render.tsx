@@ -26,7 +26,8 @@ export default function serverRenderer(stats: any): express.RequestHandler {
         res.send(`
             <html>
                 <head>
-                ${assets.getStyles()}
+                    <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
+                    ${assets.getStyles()}
                 </head>
                 <body>
                     <div id="root"></div>
