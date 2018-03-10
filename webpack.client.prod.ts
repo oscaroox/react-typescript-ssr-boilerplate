@@ -15,7 +15,7 @@ const clientConfig: webpack.Configuration = {
     ],
     output: {
         path: __dirname + "/build/client",
-        publicPath: "/",
+        publicPath: "/static/",
         filename: "[name]-[hash]-bundle.js",
     },
     resolve: {
