@@ -9,7 +9,7 @@ const app = express();
 app.use(serveFavicon(path.resolve(config.staticPath, "favicon.ico")));
 app.use("/static/", express.static(config.staticPath));
 
-if (process.env.NODE_ENV === "development") {
+if (!config.isProd) {
 
   // tslint:disable:no-var-requires
   const webpack = require("webpack");
@@ -44,14 +44,14 @@ if (process.env.NODE_ENV === "development") {
 
 Loadable.preloadAll()
 .then(() => {
-  app.listen(3000, (err: any) => {
+  app.listen(config.serverPort, (err: any) => {
     if (err) {
         // tslint:disable-next-line:no-console
       return console.error(err);
     }
     // tslint:disable-next-line:no-console
-    console.log("running at http://localhost:3000");
+    console.log(`running at http://localhost:${config.serverPort}`);
     // tslint:disable-next-line:no-console
-    console.log(`environemt: ${process.env.NODE_ENV}`);
+    console.log(`environemt: ${config.env}`);
   });
 });
