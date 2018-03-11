@@ -4,7 +4,6 @@ import nodeExternals from "webpack-node-externals";
 
 const serverConfig: webpack.Configuration = {
     name: "server",
-    mode: "production",
     context: __dirname,
     entry: [
         "./server/render.tsx",
@@ -22,9 +21,6 @@ const serverConfig: webpack.Configuration = {
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
-    },
-    optimization: {
-        splitChunks: false,
     },
     externals: [nodeExternals()],
     module: {

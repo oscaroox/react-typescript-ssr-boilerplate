@@ -21,11 +21,6 @@ const clientConfig: webpack.Configuration = {
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
-    optimization: {
-        splitChunks: {
-            chunks: "all",
-        },
-    },
     module: {
         rules: [
             {
@@ -71,8 +66,16 @@ const clientConfig: webpack.Configuration = {
             { from: "./src/public"},
         ]),
         new ExtractTextPlugin({
-            filename: "styles-[contenthash].css",
+            filename: "[name]-[contenthash].css",
             allChunks: true,
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            filename: "vendor.[chunkhash].js",
+            minChunks: (module) => module.context && module.context.indexOf("node_modules") !== -1,
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
         }),
     ],
 };

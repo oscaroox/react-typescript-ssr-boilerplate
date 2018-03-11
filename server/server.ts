@@ -19,7 +19,7 @@ if (!config.isProd) {
   const clientConfig = require("../webpack.client.dev").default;
   const serverConfig = require("../webpack.server").default;
   // tslint:enable:no-var-requires
-  serverConfig.mode = "development";
+
   const compiler = webpack([clientConfig, serverConfig]);
 
   app.use(webpackDevMiddleware(compiler, {

@@ -4,8 +4,6 @@ import webpack from "webpack";
 
 const clientConfig: webpack.Configuration = {
     name: "client",
-    mode: "development",
-
     entry: [
         "webpack-hot-middleware/client",
         "./src/client.tsx",
@@ -16,9 +14,6 @@ const clientConfig: webpack.Configuration = {
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
-    },
-    optimization: {
-        splitChunks: false,
     },
     module: {
         rules: [
