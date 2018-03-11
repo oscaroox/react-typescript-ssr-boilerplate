@@ -8,7 +8,6 @@ export interface IStats {
 export class HtmlBuilder {
 
     private stats: IStats | undefined;
-    private modules: any;
     private chunkPlaceholder = "<//-CHUNKS-//>";
     private componentPlaceHolder = "<//-ROOT-//>";
     private htmlString = "";
@@ -34,40 +33,24 @@ export class HtmlBuilder {
                 <head>
                     <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
                     <title>react-typescript-ssr</title>
-                    ${this.getStyles()}
+                    ${process.env.NODE_ENV === "production" && this.getAsset("vendor", ".css") || ""}
+                    ${process.env.NODE_ENV === "production" && this.getAsset("main", ".css") || ""}
                 </head>
                 <body>
                     <div id="root">${this.componentPlaceHolder}</div>
-                    ${this.getScripts()}
+                    ${
+                        process.env.NODE_ENV === "development"
+                        ? this.buildTag("manifest.js")
+                        : this.getAsset("vendor")
+                    }
+                    ${this.chunkPlaceholder}
+                    ${
+                        process.env.NODE_ENV === "development"
+                        ? this.buildTag("main.js")
+                        : this.getAsset("main")
+                    }
                 </body>
             </html>`;
-    }
-
-    private getScripts(): string {
-
-        if (process.env.NODE_ENV === "development") {
-            return [
-                this.buildTag("manifest.js"),
-                this.chunkPlaceholder,
-                this.buildTag("main.js"),
-            ].join("\n");
-        }
-
-        return [
-            this.getAsset("vendor"),
-            this.chunkPlaceholder,
-            this.getAsset("main"),
-        ].join("\n");
-    }
-
-    private getStyles(): string {
-        if (process.env.NODE_ENV === "development") {
-            return "";
-        }
-        return [
-            this.getAsset("vendor", ".css"),
-            this.getAsset("main", ".css"),
-        ].join("\n");
     }
 
     private buildTag = (url: string) => `<script src="/static/${url}"></script>`;
