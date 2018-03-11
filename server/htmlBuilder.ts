@@ -19,6 +19,7 @@ export class HtmlBuilder {
 
     public renderToString() {
         return `
+            <!doctype html>
             <html>
                 <head>
                     <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
