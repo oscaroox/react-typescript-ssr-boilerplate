@@ -9,17 +9,23 @@ import { HtmlBuilder } from "./htmlBuilder";
 
 let reactLoadableStats: any = {};
 
+// react-loadable doesnt get passed by webpack-dev-middleware
 if (process.env.NODE_ENV === "development") {
     // tslint:disable-next-line:no-var-requires
     reactLoadableStats = require("./react-loadable.json");
 }
 
 export default function serverRenderer(stats: any): express.RequestHandler {
+
+    // allow react-loadable to load stats file in development
+    if (process.env.NODE_ENV === "development") {
+        stats = reactLoadableStats;
+    }
+
+    // cache html string and append async chunks on request
+    const html = new HtmlBuilder(stats);
+
     return (req, res, next) => {
-        
-        if (process.env.NODE_ENV === "development") {
-            stats = reactLoadableStats;
-        }
 
         const modules: any[] = [];
         const context: {} = {};
@@ -31,8 +37,6 @@ export default function serverRenderer(stats: any): express.RequestHandler {
                 </StaticRouter>
             </Loadable.Capture>);
 
-        const html = new HtmlBuilder(component, stats, modules);
-
-        res.send(html.renderToString());
+        res.send(html.renderToString(component, modules));
     };
 }

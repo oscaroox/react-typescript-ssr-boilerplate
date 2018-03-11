@@ -8,16 +8,26 @@ export interface IStats {
 export class HtmlBuilder {
 
     private stats: IStats | undefined;
-    private component: string;
     private modules: any;
+    private chunkPlaceholder = "<//-CHUNKS-//>";
+    private componentPlaceHolder = "<//-ROOT-//>";
+    private htmlString = "";
 
-    constructor(component: string, stats: IStats | undefined, modules: any) {
+    constructor(stats: IStats | undefined) {
         this.stats = stats;
-        this.component = component;
-        this.modules = modules;
+        this.htmlString = this.cacheHtmlString();
     }
 
-    public renderToString() {
+    public renderToString(component: string, modules: any) {
+        const asyncChunks: string = getBundles(this.stats, modules)
+            .map((bundle: any) => this.buildTag(bundle.file)).join("\n");
+
+        return this.htmlString
+            .replace(this.chunkPlaceholder, asyncChunks)
+            .replace(this.componentPlaceHolder, component);
+    }
+
+    private cacheHtmlString() {
         return `
             <!doctype html>
             <html>
@@ -27,7 +37,7 @@ export class HtmlBuilder {
                     ${this.getStyles()}
                 </head>
                 <body>
-                    <div id="root">${this.component}</div>
+                    <div id="root">${this.componentPlaceHolder}</div>
                     ${this.getScripts()}
                 </body>
             </html>`;
@@ -35,28 +45,19 @@ export class HtmlBuilder {
 
     private getScripts(): string {
 
-        const asyncChunks: string[] = getBundles(this.stats, this.modules)
-            .map((bundle: any) => this.buildTag(bundle.file));
-
         if (process.env.NODE_ENV === "development") {
             return [
                 this.buildTag("manifest.js"),
-                ...asyncChunks,
+                this.chunkPlaceholder,
                 this.buildTag("main.js"),
             ].join("\n");
         }
 
-        // vendor shoudl be the first bundle loaded
-        let bundles: string[] = [this.getAsset("vendor")];
-
-        // apply additional async chunks in bundle
-
-        bundles = bundles.concat(asyncChunks);
-
-        // add main chunk as last.
-        bundles = bundles.concat([this.getAsset("main")]);
-
-        return bundles.join("\n");
+        return [
+            this.getAsset("vendor"),
+            this.chunkPlaceholder,
+            this.getAsset("main"),
+        ].join("\n");
     }
 
     private getStyles(): string {
