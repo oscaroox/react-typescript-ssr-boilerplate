@@ -71,11 +71,8 @@ const clientConfig: webpack.Configuration = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: "vendor",
-            filename: "vendor.[chunkhash].js",
+            filename: "vendor.[hash].js",
             minChunks: (module) => module.context && module.context.indexOf("node_modules") !== -1,
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "manifest",
         }),
     ],
 };

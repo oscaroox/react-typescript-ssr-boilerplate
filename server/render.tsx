@@ -7,8 +7,20 @@ import { StaticRouter } from "react-router";
 import { App } from "../src/components/App";
 import { HtmlBuilder } from "./htmlBuilder";
 
+let reactLoadableStats: any = {};
+
+if (process.env.NODE_ENV === "development") {
+    // tslint:disable-next-line:no-var-requires
+    reactLoadableStats = require("./react-loadable.json");
+}
+
 export default function serverRenderer(stats: any): express.RequestHandler {
     return (req, res, next) => {
+        
+        if (process.env.NODE_ENV === "development") {
+            stats = reactLoadableStats;
+        }
+
         const modules: any[] = [];
         const context: {} = {};
 

@@ -11,7 +11,6 @@ export class HtmlBuilder {
     private component: string;
     private modules: any;
 
-    // tslint:disable-next-line:no-empty
     constructor(component: string, stats: IStats | undefined, modules: any) {
         this.stats = stats;
         this.component = component;
@@ -34,17 +33,24 @@ export class HtmlBuilder {
     }
 
     private getScripts(): string {
+
+        const asyncChunks: string[] = getBundles(this.stats, this.modules)
+            .map((bundle: any) => this.buildTag(bundle.file));
+
         if (process.env.NODE_ENV === "development") {
-            return this.buildTag("bundle.js");
+            return [
+                this.buildTag("manifest.js"),
+                ...asyncChunks,
+                this.buildTag("main.js"),
+            ].join("\n");
         }
 
         // vendor shoudl be the first bundle loaded
-        let bundles: string[] = [this.getAsset("manifest"), this.getAsset("vendor")];
-
-        const asyncChunk = getBundles(this.stats, this.modules);
+        let bundles: string[] = [this.getAsset("vendor")];
 
         // apply additional async chunks in bundle
-        bundles = bundles.concat(asyncChunk.map((bundle: any) => this.buildTag(bundle.file)));
+
+        bundles = bundles.concat(asyncChunks);
 
         // add main chunk as last.
         bundles = bundles.concat([this.getAsset("main")]);

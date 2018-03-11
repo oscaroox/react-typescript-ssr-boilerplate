@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import Loadable from "react-loadable";
+import { start } from "repl";
 import serveFavicon from "serve-favicon";
 import { config } from "./config";
 
@@ -30,6 +31,16 @@ if (!config.isProd) {
   app.use(webpackHotMiddleware(compiler.compilers.find((c: any) => c.name === "client")));
 
   app.use(webpackHotServerMiddleware(compiler));
+  let started = false;
+  // tslint:disable-next-line:no-console
+  console.log("Compiling:....");
+  compiler.plugin("done", () => {
+    if (!started) {
+      started = true;
+      startServer();
+    }
+  });
+
 } else {
   // tslint:disable:no-var-requires
   const serverRenderer = require("./render").default;
@@ -40,18 +51,21 @@ if (!config.isProd) {
   const stats = Object.assign({}, reactLoadableStats, webpackStats);
 
   app.use(serverRenderer(stats));
+  startServer();
 }
 
-Loadable.preloadAll()
-.then(() => {
-  app.listen(config.serverPort, (err: any) => {
-    if (err) {
-        // tslint:disable-next-line:no-console
-      return console.error(err);
-    }
-    // tslint:disable-next-line:no-console
-    console.log(`running at http://localhost:${config.serverPort}`);
-    // tslint:disable-next-line:no-console
-    console.log(`environemt: ${config.env}`);
+function startServer() {
+  Loadable.preloadAll()
+  .then(() => {
+    app.listen(config.serverPort, (err: any) => {
+      if (err) {
+          // tslint:disable-next-line:no-console
+        return console.error(err);
+      }
+      // tslint:disable-next-line:no-console
+      console.log(`running at http://localhost:${config.serverPort}`);
+      // tslint:disable-next-line:no-console
+      console.log(`environemt: ${config.env}`);
+    });
   });
-});
+}

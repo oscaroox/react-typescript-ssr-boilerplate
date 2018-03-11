@@ -1,6 +1,8 @@
 // tslint:disable:object-literal-sort-keys
 import path from "path";
 import webpack from "webpack";
+// tslint:disable-next-line:no-var-requires
+const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugin;
 
 const clientConfig: webpack.Configuration = {
     name: "client",
@@ -10,7 +12,7 @@ const clientConfig: webpack.Configuration = {
     ],
     output: {
         publicPath: "/static/",
-        filename: "bundle.js",
+        filename: "[name].js",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
@@ -54,6 +56,12 @@ const clientConfig: webpack.Configuration = {
     },
 
     plugins: [
+        new ReactLoadablePlugin({
+            filename: "./server/react-loadable.json",
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
+        }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ],
