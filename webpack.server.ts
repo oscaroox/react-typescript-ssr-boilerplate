@@ -45,6 +45,7 @@ const serverConfig: webpack.Configuration = {
                 loader: "url-loader",
                 options: {
                     limit: 10000,
+                    emitFile: false,
                     name: "[name].[hash:8].[ext]",
                 },
             },
