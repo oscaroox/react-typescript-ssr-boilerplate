@@ -23,6 +23,8 @@ if (!config.isProd) {
   serverConfig.mode = "development";
   const compiler = webpack([clientConfig, serverConfig]);
 
+  // webpack dev middleware runs twice, because of file changes during the boot build.
+  // refer to https://github.com/webpack/webpack-dev-middleware/issues/247
   app.use(webpackDevMiddleware(compiler, {
     publicPath: clientConfig.output.publicPath,
     serverSideRender: true,
