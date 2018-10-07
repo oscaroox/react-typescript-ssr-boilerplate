@@ -5,10 +5,15 @@ export interface IStats {
     assetsByChunkName: { [key: string]: string | string[] } | undefined;
 }
 
+export interface IBundle {
+    file: string;
+}
+
 export class HtmlBuilder {
 
     private stats: IStats | undefined;
     private chunkPlaceholder = "<//-CHUNKS-//>";
+    private stylePlaceholder = "<//-STYLES-//>";
     private componentPlaceHolder = "<//-ROOT-//>";
     private htmlString = "";
 
@@ -18,11 +23,21 @@ export class HtmlBuilder {
     }
 
     public renderToString(component: string, modules: any) {
-        const asyncChunks: string = getBundles(this.stats, modules)
-            .map((bundle: any) => this.buildTag(bundle.file)).join("\n");
+        const bundles: IBundle[] = getBundles(this.stats, modules);
+
+        const scripts: string = bundles
+            .filter((bundle: IBundle) => bundle.file.endsWith(".js"))
+            .map((bundle) => this.buildTag(bundle.file))
+            .join("\n");
+
+        const styles: string = bundles
+            .filter((bundle: any) => bundle.file.endsWith(".css"))
+            .map((bundle) => this.buildStyle(bundle.file))
+            .join("\n");
 
         return this.htmlString
-            .replace(this.chunkPlaceholder, asyncChunks)
+            .replace(this.chunkPlaceholder, scripts)
+            .replace(this.stylePlaceholder, styles)
             .replace(this.componentPlaceHolder, component);
     }
 
@@ -35,6 +50,7 @@ export class HtmlBuilder {
                     <title>react-typescript-ssr</title>
                     ${process.env.NODE_ENV === "production" && this.getAsset("vendors", ".css") || ""}
                     ${process.env.NODE_ENV === "production" && this.getAsset("main", ".css") || ""}
+                    ${this.stylePlaceholder}
                 </head>
                 <body>
                     <div id="root">${this.componentPlaceHolder}</div>
