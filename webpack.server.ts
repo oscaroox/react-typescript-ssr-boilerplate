@@ -5,6 +5,7 @@ import nodeExternals from "webpack-node-externals";
 const serverConfig: webpack.Configuration = {
     name: "server",
     context: __dirname,
+    mode: "production",
     entry: [
         "./server/render.tsx",
     ],

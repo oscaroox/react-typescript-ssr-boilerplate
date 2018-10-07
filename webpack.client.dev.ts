@@ -6,6 +6,7 @@ const ReactLoadablePlugin = require("react-loadable/webpack").ReactLoadablePlugi
 
 const clientConfig: webpack.Configuration = {
     name: "client",
+    mode: "development",
     entry: [
         "webpack-hot-middleware/client",
         "./src/client.tsx",
@@ -59,9 +60,9 @@ const clientConfig: webpack.Configuration = {
         new ReactLoadablePlugin({
             filename: "./server/react-loadable.json",
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "manifest",
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: "manifest",
+        // }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ],

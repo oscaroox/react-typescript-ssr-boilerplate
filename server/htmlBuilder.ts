@@ -33,15 +33,15 @@ export class HtmlBuilder {
                 <head>
                     <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
                     <title>react-typescript-ssr</title>
-                    ${process.env.NODE_ENV === "production" && this.getAsset("vendor", ".css") || ""}
+                    ${process.env.NODE_ENV === "production" && this.getAsset("vendors", ".css") || ""}
                     ${process.env.NODE_ENV === "production" && this.getAsset("main", ".css") || ""}
                 </head>
                 <body>
                     <div id="root">${this.componentPlaceHolder}</div>
                     ${
                         process.env.NODE_ENV === "development"
-                        ? this.buildTag("manifest.js")
-                        : this.getAsset("vendor")
+                        ? ""
+                        : this.getAsset("vendors")
                     }
                     ${this.chunkPlaceholder}
                     ${
@@ -59,10 +59,8 @@ export class HtmlBuilder {
         <link rel="stylesheet" type="text/css" href="/static/${url}">`
 
     private getAsset(chunkName: string, extension = ".js") {
-
         let chunks = this.stats && this.stats.assetsByChunkName
             && this.stats.assetsByChunkName[chunkName];
-
         if (!chunks) {
             throw new Error(`Chunk name ${chunkName} does not exists in stats file`);
         }
