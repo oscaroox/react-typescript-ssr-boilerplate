@@ -5,7 +5,7 @@ export class AboutPage extends React.Component<any, any> {
   public render() {
     return (
       <div>
-        About Pages
+        About Page
       </div>
     );
   }
