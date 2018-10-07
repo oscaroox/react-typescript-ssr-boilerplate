@@ -70,7 +70,6 @@ const clientConfig: webpack.Configuration = {
         ],
     },
     plugins: [
-        // 1d56a37aa7e66a3edf96
         new webpack.HashedModuleIdsPlugin(),
         new ReactLoadablePlugin({
             filename: "./build/server/react-loadable.json",
