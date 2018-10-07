@@ -66,10 +66,10 @@ const clientConfig: webpack.Configuration = {
         new webpack.HotModuleReplacementPlugin(),
     ],
 
-    devServer: {
-        contentBase: "./dist",
-        hot: true,
-    },
+    // devServer: {
+    //     contentBase: "./dist",
+    //     hot: true,
+    // },
 
 };
 
