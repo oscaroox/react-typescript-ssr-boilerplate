@@ -39,15 +39,20 @@ export class HtmlBuilder {
                 <body>
                     <div id="root">${this.componentPlaceHolder}</div>
                     ${
-                        process.env.NODE_ENV === "development"
-                        ? ""
-                        : this.getAsset("vendors")
+                        process.env.NODE_ENV === "production"
+                        ? this.getAsset("runtime")
+                        : ""
+                    }
+                    ${
+                        process.env.NODE_ENV === "production"
+                        ? this.getAsset("vendors")
+                        : ""
                     }
                     ${this.chunkPlaceholder}
                     ${
-                        process.env.NODE_ENV === "development"
-                        ? this.buildTag("main.js")
-                        : this.getAsset("main")
+                        process.env.NODE_ENV === "production"
+                        ? this.getAsset("main")
+                        : this.buildTag("main.js")
                     }
                 </body>
             </html>`;
