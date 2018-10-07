@@ -1,6 +1,6 @@
 // tslint:disable:object-literal-sort-keys
 import CopyWebpackPlugin from "copy-webpack-plugin";
-// import ExtractTextPlugin from "extract-text-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ExtractPlugin from "mini-css-extract-plugin";
 import webpack from "webpack";
 // tslint:disable-next-line:no-var-requires
@@ -18,18 +18,18 @@ const clientConfig: webpack.Configuration = {
     output: {
         path: __dirname + "/build/client",
         publicPath: "/static/",
-        filename: "[name]-[hash]-bundle.js",
+        filename: "[name]-[contenthash]-bundle.js",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
     optimization: {
+        runtimeChunk: 'single',
         splitChunks: {
             cacheGroups: {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
-                    enforce: true,
                     chunks: 'all'
                 }
             }
@@ -70,6 +70,8 @@ const clientConfig: webpack.Configuration = {
         ],
     },
     plugins: [
+        // 1d56a37aa7e66a3edf96
+        new webpack.HashedModuleIdsPlugin(),
         new ReactLoadablePlugin({
             filename: "./build/server/react-loadable.json",
         }),
@@ -82,15 +84,9 @@ const clientConfig: webpack.Configuration = {
         new ExtractPlugin({
             filename: "[name]-[contenthash].css",
         }),
-        // new ExtractTextPlugin({
-        //     filename: "[name]-[contenthash].css",
-        //     allChunks: true,
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: "vendor",
-        //     filename: "vendor.[hash].js",
-        //     minChunks: (module) => module.context && module.context.indexOf("node_modules") !== -1,
-        // }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: "static",
+        })
     ],
 };
 
