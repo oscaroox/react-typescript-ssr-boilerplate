@@ -1,11 +1,14 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
-export default class HomePage extends React.Component<any, any> {
+export class HomePage extends React.Component<any, any> {
   public render() {
     return (
       <div>
-        Home Page
+        Home Pages
       </div>
     );
   }
 }
+
+export default hot(module)(HomePage);

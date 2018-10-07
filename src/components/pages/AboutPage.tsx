@@ -1,11 +1,14 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
-export default class AboutPage extends React.Component<any, any> {
+export class AboutPage extends React.Component<any, any> {
   public render() {
     return (
       <div>
-        About Page
+        About Pages
       </div>
     );
   }
 }
+
+export default hot(module)(AboutPage);
